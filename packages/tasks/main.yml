@@ -1,0 +1,16 @@
+- name: Make sure machine is subscribed
+  redhat_subscription:
+    state: present
+    username: "{{ rhn_user }}"
+    password: "{{ rhn_pass }}"
+    auto_attach: true
+
+- name: Install pre-req packages
+  dnf:
+    name:
+    - libaio
+    - java-1.8.0-openjdk
+    - java-1.8.0-openjdk-devel
+    - jq
+    - unzip
+    state: latest
