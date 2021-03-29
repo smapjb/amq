@@ -25,4 +25,26 @@ You will see that site.yml is very succinct simply change the variables in that 
 All of the detail is in the forked community role
 https://github.com/smapjb/ansible-artemis
 
+## Shared Store
+Shared store is a role that will configure a gluster shared store for setting up amq as a master slave config
 
+You will need the latest smapjb.ansible-artemis update. To get this you will need to remove the currently downloaded role
+
+`ansible-galaxy remove smapjb.ansible-artemis`
+
+Followed by 
+
+`ansible-galaxy install -r requirements.yml`
+
+The shared store configuration is activated by the existence of groups. Ideally these will be metadata tags or labels on your dynamic inventory.
+
+```
+[label_cluster_true]
+host1
+host2
+[label_amq_master]
+host1
+[label_amq_slave]
+host2
+```
+Replace this role with whatever shared storage tech you want to use
