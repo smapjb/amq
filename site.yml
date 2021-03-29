@@ -9,6 +9,14 @@
   roles:
     # Subscribe the newly provisioned servers and install pre-req packages
     - role: packages
+    
+    # Set up a shared glusterfs for master and slave HA when template label gluster: true is defined
+    # You can easily replace this role with one for whatever shared file store tech you are using (NFS in dev)
+    - role: shared_store
+      gluster_mount_dir: /var/lib/artemis-broker/sharedstore
+      when: "'label_cluster_true' in groups"
+
+
 
     # This role is forked from https://github.com/remyma/ansible-artemis in galaxy
     - role: smapjb.ansible-artemis 
