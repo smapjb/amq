@@ -1,14 +1,12 @@
 - name: Enable a Gluster repository
   rhsm_repository:
-    name: rh-gluster-3-for-rhel-8-x86_64-rpms
+    name: "{{ gluster_channel }}"
     state: enabled
 
 - name: Make sure gluster is installed and started
-  dnf:
+  yum:
     name:
     - glusterfs-server
-    - glusterfs-cli
-    - glusterfs
     state: latest
 
 - name: Start up the gluster daemon

@@ -1,0 +1,5 @@
+
+Some examples to test producing and consuming messages
+
+./artemis producer --destination queue://exampleQueue --message-count 1000 --url tcp://$(hostname -f):61616
+./artemis consumer --destination queue://exampleQueue --message-count 1000 --url tcp://enchanting-sheep.prod.croftvillas.com:61616

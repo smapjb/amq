@@ -1,3 +1,5 @@
 # override these variables by using ansible-vaulted secrets
 rhn_user: user
 rhn_pass: password
+
+lxml_package: python-lxml

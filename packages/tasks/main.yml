@@ -6,12 +6,12 @@
     auto_attach: true
 
 - name: Install pre-req packages
-  dnf:
+  yum:
     name:
-    - python3-lxml
+    - "{{ lxml_package }}"
     - libaio
     - java-1.8.0-openjdk
     - java-1.8.0-openjdk-devel
-    - jq
+#    - jq
     - unzip
     state: latest

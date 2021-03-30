@@ -9,10 +9,14 @@
   roles:
     # Subscribe the newly provisioned servers and install pre-req packages
     - role: packages
+    #  lxml_version: python3-lxml
+      lxml_version: python-lxml
     
     # Set up a shared glusterfs for master and slave HA when template label gluster: true is defined
     # You can easily replace this role with one for whatever shared file store tech you are using (NFS in dev)
     - role: shared_store
+      #gluster_channel: rh-gluster-3-for-rhel-8-x86_64-rpms
+      gluster_channel: rh-gluster-3-for-rhel-7-server-rpms
       gluster_mount_dir: /var/lib/artemis-broker/sharedstore
       when: "'label_cluster_true' in groups"
 

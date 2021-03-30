@@ -1,0 +1,9 @@
+[label_cluster_true]
+artemis01.internal.croftvillas.com
+artemis02.internal.croftvillas.com
+
+[label_amq_master]
+artemis01.internal.croftvillas.com
+
+[label_amq_slave]
+artemis02.internal.croftvillas.com
