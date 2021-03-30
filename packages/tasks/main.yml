@@ -8,6 +8,7 @@
 - name: Install pre-req packages
   dnf:
     name:
+    - python3-lxml
     - libaio
     - java-1.8.0-openjdk
     - java-1.8.0-openjdk-devel
