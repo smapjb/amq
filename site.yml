@@ -9,13 +9,12 @@
   roles:
   # Subscribe the newly provisioned servers and install pre-req packages
   - role: packages
-    lxml_package: "{{ 'python3-lxml'  if ansible_facts.distribution_major_version  == '8' else 'python-lxml' }}"
+    lxml_package: 
   
   # Set up a shared glusterfs for master and slave HA when template label gluster: true is defined
   # You can easily replace this role with one for whatever shared file store tech you are using (NFS in dev)
   - role: shared_store
     gluster_mount_dir: /var/lib/artemis-broker/sharedstore
-    gluster_channel: "{{ 'rh-gluster-3-for-rhel-8-x86_64-rpms'  if ansible_facts.distribution_major_version  == '8' else 'rh-gluster-3-for-rhel-7-server-rpms' }}"
     when: "'label_cluster_true' in groups"
 
 

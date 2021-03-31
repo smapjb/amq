@@ -8,7 +8,7 @@
 - name: Install pre-req packages
   yum:
     name:
-    - "{{ lxml_package }}"
+    - "{{ 'python3-lxml'  if ansible_facts.distribution_major_version  == '8' else 'python-lxml' }}"
     - libaio
     - java-1.8.0-openjdk
     - java-1.8.0-openjdk-devel

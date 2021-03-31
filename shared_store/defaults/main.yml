@@ -1,5 +1,3 @@
 gluster_mount_dir: /mnt/gluster
 gluster_brick_dir: /srv/gluster/brick
 gluster_brick_name: gluster
-gluster_channel: rh-gluster-3-for-rhel-8-x86_64-rpms
-# for rhel7 the channel is rh-gluster-3-for-rhel-7-server-rpms

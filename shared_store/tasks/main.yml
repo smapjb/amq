@@ -1,6 +1,6 @@
 - name: Enable a Gluster repository
   rhsm_repository:
-    name: "{{ gluster_channel }}"
+    name: "{{ 'rh-gluster-3-for-rhel-8-x86_64-rpms'  if ansible_facts.distribution_major_version  == '8' else 'rh-gluster-3-for-rhel-7-server-rpms' }}"
     state: enabled
 
 - name: Make sure gluster is installed and started
