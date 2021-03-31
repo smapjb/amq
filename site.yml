@@ -5,27 +5,26 @@
 
   vars_files:
     - secrets.yml
-
+  
   roles:
-    # Subscribe the newly provisioned servers and install pre-req packages
-    - role: packages
-      lxml_package: python3-lxml
-      #lxml_version: python-lxml
-    
-    # Set up a shared glusterfs for master and slave HA when template label gluster: true is defined
-    # You can easily replace this role with one for whatever shared file store tech you are using (NFS in dev)
-    - role: shared_store
-      gluster_channel: rh-gluster-3-for-rhel-8-x86_64-rpms
-      #gluster_channel: rh-gluster-3-for-rhel-7-server-rpms
-      gluster_mount_dir: /var/lib/artemis-broker/sharedstore
-      when: "'label_cluster_true' in groups"
+  # Subscribe the newly provisioned servers and install pre-req packages
+  - role: packages
+    lxml_package: "{{ 'python3-lxml'  if ansible_facts.distribution_major_version  == '8' else 'python-lxml' }}"
+  
+  # Set up a shared glusterfs for master and slave HA when template label gluster: true is defined
+  # You can easily replace this role with one for whatever shared file store tech you are using (NFS in dev)
+  - role: shared_store
+    gluster_mount_dir: /var/lib/artemis-broker/sharedstore
+    gluster_channel: "{{ 'rh-gluster-3-for-rhel-8-x86_64-rpms'  if ansible_facts.distribution_major_version  == '8' else 'rh-gluster-3-for-rhel-7-server-rpms' }}"
+    when: "'label_cluster_true' in groups"
 
-    # This role is forked from https://github.com/remyma/ansible-artemis in galaxy
-    - role: smapjb.ansible-artemis 
-      artemis_version: "7.8.1"
-      artemis_download_url: "http://gateway.internal.croftvillas.com/amq-broker-{{ artemis_version }}-bin.zip"
-      artemis_journal_type: "ASYNCIO"
-      artemis_web_host: "{{ ansible_fqdn }}"
-      artemis_shared_store: "./sharedstore"
-      jolokia_cors: 
-        - "*://*"
+
+  # This role is forked from https://github.com/remyma/ansible-artemis in galaxy
+  - role: smapjb.ansible-artemis 
+    artemis_version: "7.8.1"
+    artemis_download_url: "http://gateway.internal.croftvillas.com/amq-broker-{{ artemis_version }}-bin.zip"
+    artemis_journal_type: "ASYNCIO"
+    artemis_web_host: "{{ ansible_fqdn }}"
+    artemis_shared_store: "./sharedstore"
+    jolokia_cors: 
+      - "*://*"
