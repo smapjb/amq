@@ -9,7 +9,6 @@
   roles:
   # Subscribe the newly provisioned servers and install pre-req packages
   - role: packages
-    lxml_package: 
   
   # Set up a shared glusterfs for master and slave HA when template label gluster: true is defined
   # You can easily replace this role with one for whatever shared file store tech you are using (NFS in dev)
