@@ -1,2 +1,4 @@
 - src: https://github.com/smapjb/ansible-artemis.git
   name: smapjb.ansible-artemis
+  version: master
+- geerlingguy.glusterfs, 3.1.2
