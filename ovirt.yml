@@ -2,7 +2,7 @@ plugin: ovirt.ovirt.ovirt
 ovirt_url: https://rhvm.internal.croftvillas.com/ovirt-engine/api
 ovirt_username: admin@internal
 ovirt_query_filter:
-  search: 'name=citi* AND cluster=Cluster01'
+  search: 'name=artemis* AND cluster=Cluster01'
   case_sensitive: no
   max: 15
 keyed_groups:
