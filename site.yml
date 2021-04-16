@@ -10,10 +10,11 @@
   # Subscribe the newly provisioned servers and install pre-req packages
   - role: packages
   
-  # Set up a shared glusterfs for master and slave HA when template label gluster: true is defined
-  # You can easily replace this role with one for whatever shared file store tech you are using (NFS in dev)
+  # Shared store role mounts an NFS share to use as a shared store
   - role: shared_store
-    gluster_mount_dir: /var/lib/artemis-broker/sharedstore
+    nfs_server: 192.168.0.4
+    nfs_share: /vmware_templates/shared_store 
+    shared_mount_dir: /var/lib/artemis-broker/sharedstore
     when: "'label_cluster_true' in groups"
 
 
