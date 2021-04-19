@@ -1,7 +1,62 @@
-- name: Mount shared NFS volume
+- name: Enable a Gluster repository
+  rhsm_repository:
+    name: 
+    - "{{ 'rh-gluster-3-for-rhel-8-x86_64-rpms'  if ansible_facts.distribution_major_version  == '8' else 'rh-gluster-3-for-rhel-7-server-rpms' }}"
+    - "{{ 'rh-gluster-3-nfs-for-rhel-8-x86_64-rpms'  if ansible_facts.distribution_major_version  == '8' else 'rh-gluster-3-nfs-for-rhel-7-server-rpms' }}"
+    state: enabled
+
+- name: Make sure gluster is installed and started
+  yum:
+    name:
+    - glusterfs-server
+    - glusterfs-ganesha
+    state: latest
+
+- name: Start up the gluster daemon
+  service:
+    name: glusterd
+    state: started
+
+- name: Ensure Gluster brick and mount directories exist.
+  file: "path={{ item }} state=directory mode=0775"
+  with_items:
+    - "{{ gluster_brick_dir }}"
+    - "{{ gluster_mount_dir }}"
+
+- name: Configure Gluster volume.
+  gluster_volume:
+    state: present
+    name: "{{ gluster_brick_name }}"
+    brick: "{{ gluster_brick_dir }}"
+    replicas: 2
+    cluster: "{{ groups.label_cluster_true | join(',') }}"
+    host: "{{ inventory_hostname }}"
+    force: yes
+  run_once: true
+
+- name: Configure Ganesha NFSv4 interface
+  template:
+    src: "ganesha.conf.j2"
+    dest: "/etc/ganesha/ganesha.{{ gluster_brick_name }}.conf"
+  notify: Restart Ganesha
+
+- name: Ensure that the config is included
+  lineinfile:
+    path: /etc/ganesha/ganesha.conf
+    line: '%include "/etc/ganesha/ganesha.{{ gluster_brick_name }}.conf"'
+  notify: Restart Ganesha
+
+- name: Start up the NFS-Ganesha daemon
+  service:
+    name: nfs-ganesha
+    state: started
+
+# Note although NFS is enabled on both master and slave we should only connect to one (in this case master)
+# Ganesha can be set up in an HA pair to automatically fail over
+- name: Ensure Gluster volume is mounted via nfs.
   mount:
-    src: "{{ nfs_server }}:{{ nfs_share }}"
-    path: "{{ shared_mount_dir }}"
-    opts: vers=4,rw,sync,hard,intr
-    state: mounted
+    name: "{{ gluster_mount_dir }}"
+    src: "{{ groups['label_amq_master'][0] }}:/{{ gluster_brick_name }}"
     fstype: nfs
+    opts: "vers=4,defaults,_netdev"
+    state: mounted

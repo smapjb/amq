@@ -1,0 +1,5 @@
+---
+- name: "Restart Ganesha"
+  service:
+    name: "nfs-ganesha"
+    state: restarted
