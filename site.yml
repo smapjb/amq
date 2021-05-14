@@ -20,7 +20,7 @@
   # This role is forked from https://github.com/remyma/ansible-artemis in galaxy
   - role: smapjb.ansible-artemis 
     artemis_version: "7.8.1"
-    artemis_download_url: "http://toolchain.internal.croftvillas.com:8081/artifactory/ext-release-local/amq-broker-{{ artemis_version }}-bin.zip"
+    artemis_download_url: "http://nexus.apps.prod.croftvillas.com/repository/ext-release-local/amq-broker-{{ artemis_version }}-bin.zip"
     artemis_journal_type: "ASYNCIO"
     artemis_web_host: "{{ ansible_fqdn }}"
     artemis_shared_store: "./sharedstore"
